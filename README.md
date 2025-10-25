@@ -1,4 +1,4 @@
-***Web Scraper — Image + Class Collector***
+**Web Scraper — Image + Class Collector**
 
 This small scraper collects image URLs and DOM class names from a webpage and can (optionally) download images into training/validation folders. It uses Selenium to render pages (so it can handle JavaScript-injected content) and falls back to requests/BeautifulSoup for simple parsing where appropriate.
 
@@ -17,13 +17,12 @@ Requirements
   - selenium
   - webdriver-manager (optional but convenient)
   - requests
-  - beautifulsoup4
-  - pillow
   - collections (standard lib)
 
 Example setup (PowerShell):
 
 ```powershell
+pip -m venv .venv
 pip install -r requirements.txt
 ```
 
@@ -43,29 +42,6 @@ How the script works (high-level)
 1. Launch Selenium Chrome and open the page.
 2. Scroll to trigger lazy-loading.
 3. Collect all `<img>` elements and their `class` attributes.
-4. Choose the most common class (heuristic) and select images by that class.
+4. Choose the most common class (heuristic) and select images by that class (to exclude things like icons and profile pictures).
 5. Download images (requests) and save them into training/validation split (80/20 by default).
-6. Use Pillow to optionally validate images.
 
-Troubleshooting
-- No files are written:
-  - Check your current working directory when running the script. The script uses relative paths (assets/...). Run it from the project root or change paths to absolute.
-  - Print `os.getcwd()` in the script to confirm where files will be written.
-  - Some URLs may be `blob:` or `data:` URLs. `data:` can be decoded and saved, `blob:` cannot be fetched by requests; you need to extract the underlying binary in the browser (canvas toDataURL) or find the real CDN URL.
-- Requests return non-image responses (403/503):
-  - Try adding a browser-like User-Agent header to `requests.get`.
-  - If the server refuses programmatic clients, consider using the browser session to fetch bytes or respect the site's policy.
-- Images are corrupt:
-  - Pillow can detect and optionally reject corrupted files; the script can be extended to validate before saving.
-
-Ethics and legality
-- Respect robots.txt and a site's terms of service.
-- Do not use the scraper against sites that explicitly forbid automation.
-
-Extending the tool
-- Add command-line flags with `argparse` (URL, output folder, max images, download flag).
-- Use `webdriver-manager` to avoid manual ChromeDriver installs.
-- Add concurrency (ThreadPoolExecutor) for faster downloads.
-
-License
-MIT
