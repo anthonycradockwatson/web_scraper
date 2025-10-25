@@ -1,4 +1,4 @@
-Web Scraper — Image + Class Collector
+***Web Scraper — Image + Class Collector***
 
 This small scraper collects image URLs and DOM class names from a webpage and can (optionally) download images into training/validation folders. It uses Selenium to render pages (so it can handle JavaScript-injected content) and falls back to requests/BeautifulSoup for simple parsing where appropriate.
 
@@ -24,12 +24,12 @@ Requirements
 Example setup (PowerShell):
 
 ```powershell
-pip install selenium webdriver-manager requests beautifulsoup4 pillow
+pip install -r requirements.txt
 ```
 
 Quick usage
 - Edit or run the `web_scraper.py` script. By default it runs against an example URL at the bottom of the file; change the URL to your target.
-- The script will create these directories (if missing):
+- The script will create these directories (if missing) and place 80% of images into training and 20% into validation:
   - `assets/images/training`
   - `assets/images/validation`
 
